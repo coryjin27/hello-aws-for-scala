@@ -32,23 +32,23 @@ object HelloDynamoDBApp extends App {
         .build()
     )
   }
-  def getTableStatus(name: String) = {
-    ddb.describeTable(DescribeTableRequest.builder().tableName(table).build()).table().tableStatus()
+  def getTableStatus(name: String)(implicit ddb: DynamoDbClient) = {
+    ddb.describeTable(DescribeTableRequest.builder().tableName(name).build()).table().tableStatus()
   }
-  def deleteTable(name: String): DeleteTableResponse = {
+  def deleteTable(name: String)(implicit ddb: DynamoDbClient): DeleteTableResponse = {
     ddb.deleteTable(DeleteTableRequest.builder().tableName(name).build())
   }
 
-  def putItem(table: String, values: Map[String, AttributeValue]): PutItemResponse = {
+  def putItem(table: String, values: Map[String, AttributeValue])(implicit ddb: DynamoDbClient): PutItemResponse = {
     ddb.putItem(PutItemRequest.builder().tableName(table).item(values.asJava).build())
   }
-  def updateItem(table: String, key: Map[String, AttributeValue], values: Map[String, AttributeValueUpdate]): UpdateItemResponse = {
+  def updateItem(table: String, key: Map[String, AttributeValue], values: Map[String, AttributeValueUpdate])(implicit ddb: DynamoDbClient): UpdateItemResponse = {
     ddb.updateItem(UpdateItemRequest.builder().tableName(table).key(key.asJava).attributeUpdates(values.asJava).build())
   }
-  def getItem(table: String, key: Map[String, AttributeValue]): GetItemResponse = {
+  def getItem(table: String, key: Map[String, AttributeValue])(implicit ddb: DynamoDbClient): GetItemResponse = {
     ddb.getItem(GetItemRequest.builder().tableName(table).key(key.asJava).build())
   }
-  def deleteItem(table: String, key: Map[String, AttributeValue]): DeleteItemResponse = {
+  def deleteItem(table: String, key: Map[String, AttributeValue])(implicit ddb: DynamoDbClient): DeleteItemResponse = {
     ddb.deleteItem(DeleteItemRequest.builder().tableName(table).key(key.asJava).build())
   }
 
